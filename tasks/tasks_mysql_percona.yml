@@ -20,17 +20,20 @@
     tags:
       - mysql
 
-  - name: Percona MySQL | Add GPG key to apt keyring
-    apt_key: id=1C4CBDCDCD2EFD2A keyserver=hkp://keys.gnupg.net state=present
+  - name: Percona MySQL | Obtaining percona public key
+    apt_key: keyserver=keyserver.ubuntu.com id=8507EFA5
     become: yes
     tags:
       - mysql
 
-  - name: Obtaining percona public key
-    apt_key: url=https://www.percona.com/downloads/RPM-GPG-KEY-percona state=present
-    become: yes
-    tags:
-      - mysql
+    #apt-key adv --keyserver keys.gnupg.net --recv-keys 8507EFA5 or
+    #apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8507EFA5
+
+#  - name: Obtaining percona public key
+#    apt_key: url=https://www.percona.com/downloads/RPM-GPG-KEY-percona state=present
+#    become: yes
+#    tags:
+#      - mysql
 
   - name: Percona MySQL | Add Debian apt repository
     apt_repository: repo="deb http://repo.percona.com/apt {{ansible_distribution_release}} main"
