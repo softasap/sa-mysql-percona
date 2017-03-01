@@ -29,14 +29,14 @@
 
   - name: Percona Server for MongoDB | Add Debian apt repository
     apt_repository: repo="deb http://repo.percona.com/apt {{ansible_distribution_release}} main"
-    when: ansible_os_family == "Debian" and mongo_present|failed
+    when: ansible_os_family == "Debian" and mysql_present|failed
     become: yes
     tags:
       - mysql
 
   - name: Percona Server for MongoDB | Add Debian apt repository
     apt_repository: repo="deb-src http://repo.percona.com/apt {{ansible_distribution_release}} main"
-    when: ansible_os_family == "Debian" and mongo_present|failed
+    when: ansible_os_family == "Debian" and mysql_present|failed
     become: yes
     tags:
       - mysql
