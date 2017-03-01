@@ -20,21 +20,21 @@
     tags:
       - mysql
 
-  - name: Percona Server for MongoDB | Add GPG key to apt keyring
+  - name: Percona MySQL | Add GPG key to apt keyring
     apt_key: id=1C4CBDCDCD2EFD2A keyserver=hkp://keys.gnupg.net state=present
     become: yes
     tags:
       - mysql
 
 
-  - name: Percona Server for MongoDB | Add Debian apt repository
+  - name: Percona MySQL | Add Debian apt repository
     apt_repository: repo="deb http://repo.percona.com/apt {{ansible_distribution_release}} main"
     when: ansible_os_family == "Debian" and mysql_present|failed
     become: yes
     tags:
       - mysql
 
-  - name: Percona Server for MongoDB | Add Debian apt repository
+  - name: Percona MySQL | Add Debian apt repository
     apt_repository: repo="deb-src http://repo.percona.com/apt {{ansible_distribution_release}} main"
     when: ansible_os_family == "Debian" and mysql_present|failed
     become: yes
