@@ -46,8 +46,15 @@
     tags:
       - mysql
 
+  - name: Percona MySQL | Apt-Pinning the packages
+    template: src="{{role_dir}}/templates/00percona.pref.j2" dest="/etc/apt/preferences.d/00percona.pref"
+    when: ansible_os_family == "Debian" and mysql_present|failed
+    become: yes
+    tags:
+      - mysql
 
-  - name: Percona MySQL | Install Server
+
+  - name: Percona MySQL | Install percona-server-server
     apt: update-cache=yes force=yes state=present pkg="percona-server-server"
     when: ansible_os_family == "Debian" and mysql_present|failed
     become: yes
