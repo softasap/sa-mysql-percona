@@ -26,6 +26,11 @@
     tags:
       - mysql
 
+  - name: Obtaining percona public key
+    apt_key: url=https://www.percona.com/downloads/RPM-GPG-KEY-percona state=present
+    become: yes
+    tags:
+      - mysql
 
   - name: Percona MySQL | Add Debian apt repository
     apt_repository: repo="deb http://repo.percona.com/apt {{ansible_distribution_release}} main"
