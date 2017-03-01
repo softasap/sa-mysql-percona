@@ -1,0 +1,4 @@
+---
+  - include: tasks_mysql_percona.yml
+  - include: tasks_mysql_cfg_patch.yml
+  - include: tasks_dbs_configure.yml

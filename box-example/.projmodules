@@ -1,0 +1,4 @@
+[submodule "roles/sa-mysql-percona"]
+        path = roles/sa-mysql-percona
+        url = https://github.com/softasap/sa-mysql-percona.git
+

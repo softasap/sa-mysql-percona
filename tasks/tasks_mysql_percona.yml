@@ -1,0 +1,72 @@
+---
+  # Parameters:
+  #  mysql_root_password
+
+  - name: Percona MySQL | Check if is installed
+    command: test -x /usr/bin/mysql
+    when: ansible_system == "Linux"
+    register: mysql_present
+    ignore_errors: yes
+    tags:
+      - mysql
+
+  - name: Percona MySQL | Preset root password
+    shell: echo mysql-server-5.6 mysql-server/{{item}} password {{mysql_root_password}} | debconf-set-selections
+    when: ansible_os_family == "Debian" and mysql_present|failed
+    with_items:
+      - "root_password"
+      - "root_password_again"
+    become: yes
+    tags:
+      - mysql
+
+  - name: Percona Server for MongoDB | Add GPG key to apt keyring
+    apt_key: id=1C4CBDCDCD2EFD2A keyserver=hkp://keys.gnupg.net state=present
+    become: yes
+    tags:
+      - mysql
+
+
+  - name: Percona Server for MongoDB | Add Debian apt repository
+    apt_repository: repo="deb http://repo.percona.com/apt {{ansible_distribution_release}} main"
+    when: ansible_os_family == "Debian" and mongo_present|failed
+    become: yes
+    tags:
+      - mysql
+
+  - name: Percona Server for MongoDB | Add Debian apt repository
+    apt_repository: repo="deb-src http://repo.percona.com/apt {{ansible_distribution_release}} main"
+    when: ansible_os_family == "Debian" and mongo_present|failed
+    become: yes
+    tags:
+      - mysql
+
+
+  - name: Percona MySQL | Install Server
+    apt: update-cache=yes force=yes state=present pkg="percona-server-server"
+    when: ansible_os_family == "Debian" and mysql_present|failed
+    become: yes
+    tags:
+      - mysql
+
+  - name: Percona MySQL | install libmysqlclient-dev
+    apt: name=libmysqlclient-dev update_cache=yes state=latest
+    when: ansible_os_family == "Debian" and mysql_present|failed
+    become: yes
+    tags:
+      - mysql
+
+  - name: Percona MySQL | Install Client
+    apt: update-cache=yes force=yes state=present pkg="mysql-client"
+    when: ansible_os_family == "Debian" and mysql_present|failed
+    become: yes
+    tags:
+      - mysql
+
+  - name: Percona MySQL | Restart
+    service: name=mysql state=restarted
+#    when: mysql_conf.changed
+    when: docker_test is not defined
+    become: yes
+    tags:
+      - mysql
