@@ -95,9 +95,10 @@
     tags:
       - mysql
 
-  - name: Percona MySQL | Dirty ensure password is set, if skipped by deb prefs
+  - name: Percona MySQL | Dirty ensure password is set, if it is still empty (happens with percona)
     shell: mysqladmin -u {{mysql_root_user}} password {{mysql_root_password}}
     when: ansible_os_family == "Debian" and mysql_present|failed
+    ignore_errors: true
     become: yes
     tags:
       - mysql
