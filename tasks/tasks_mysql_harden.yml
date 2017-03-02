@@ -12,7 +12,7 @@
           - mysql
 
       - name: Template hardening script (2/2)
-        template: src="{{role_dir}}/templates/harden/secure_mysql_expect.j2" dest="~/secure_mysql.expect"
+        template: src="{{role_dir}}/templates/harden/secure_mysql.expect.j2" dest="~/secure_mysql.expect"
         tags:
           - mysql
 
@@ -20,7 +20,7 @@
         shell: ~/secure_mysql_bash.sh
         tags:
           - mysql
-          
+
     always:
       - name: Cleanup hardening scripts
         file: path="{{item}}" state="absent"
