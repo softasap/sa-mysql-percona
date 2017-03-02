@@ -95,12 +95,19 @@
     tags:
       - mysql
 
-#  - name: Percona MySQL | install libmysqlclient-dev
-#    apt: name=libmysqlclient-dev update_cache=yes state=latest
-#    when: ansible_os_family == "Debian" and mysql_present|failed
-#    become: yes
-#    tags:
-#      - mysql
+  - name: Percona MySQL | Dirty ensure password is set, if skipped by deb prefs
+    shell: mysqladmin -u {{mysql_root_user}} password {{mysql_root_password}}
+    when: ansible_os_family == "Debian" and mysql_present|failed
+    become: yes
+    tags:
+      - mysql
+
+  - name: Percona MySQL | install libmysqlclient-dev
+    apt: name=libmysqlclient-dev update_cache=yes state=latest
+    when: ansible_os_family == "Debian" and mysql_present|failed
+    become: yes
+    tags:
+      - mysql
 
 #  - name: Percona MySQL | Install Client
 #    apt: update-cache=yes force=yes state=present pkg="mysql-client"
