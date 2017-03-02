@@ -11,10 +11,10 @@
         tags:
           - mysql
 
-      - name: Template hardening script (2/2)
-        template: src="{{role_dir}}/templates/harden/secure_mysql.expect.j2" dest="~/secure_mysql.expect"
-        tags:
-          - mysql
+      # - name: Template hardening script (2/2)
+      #   template: src="{{role_dir}}/templates/harden/secure_mysql.expect.j2" dest="~/secure_mysql.expect"
+      #   tags:
+      #     - mysql
 
       - name: execute hardening script (bash)
         shell: ~/secure_mysql_bash.sh
