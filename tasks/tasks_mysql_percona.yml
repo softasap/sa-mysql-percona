@@ -11,8 +11,8 @@
       - mysql
 
   - name: Percona MySQL | Preset root password (5.5)
-    shell: echo percona-server-server-5.5 mysql-server/{{item}} password {{mysql_root_password}} | debconf-set-selections
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    shell: echo percona-server-server-5.5 mysql-server/{{ item }} password {{ mysql_root_password }} | debconf-set-selections
+    when: ansible_os_family == "Debian" and mysql_present is failed
     with_items:
       - "root_password"
       - "root_password_again"
@@ -21,8 +21,8 @@
       - mysql
 
   - name: Percona MySQL | Preset root password (generic)
-    shell: echo percona-server-server/{{item}} password {{mysql_root_password}} | debconf-set-selections
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    shell: echo percona-server-server/{{ item }} password {{ mysql_root_password }} | debconf-set-selections
+    when: ansible_os_family == "Debian" and mysql_present is failed
     with_items:
       - "root_password"
       - "root_password_again"
@@ -31,8 +31,8 @@
       - mysql
 
   - name: Percona MySQL | Preset root password (5.6)
-    shell: echo percona-server-server-5.6 mysql-server/{{item}} password {{mysql_root_password}} | debconf-set-selections
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    shell: echo percona-server-server-5.6 mysql-server/{{ item }} password {{ mysql_root_password }} | debconf-set-selections
+    when: ansible_os_family == "Debian" and mysql_present is failed
     with_items:
       - "root_password"
       - "root_password_again"
@@ -41,8 +41,8 @@
       - mysql
 
   - name: Percona MySQL | Preset root password (5.7)
-    shell: echo percona-server-server-5.7 mysql-server/{{item}} password {{mysql_root_password}} | debconf-set-selections
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    shell: echo percona-server-server-5.7 mysql-server/{{ item }} password {{ mysql_root_password }} | debconf-set-selections
+    when: ansible_os_family == "Debian" and mysql_present is failed
     with_items:
       - "root_password"
       - "root_password_again"
@@ -67,22 +67,22 @@
 #      - mysql
 
   - name: Percona MySQL | Add Debian apt repository
-    apt_repository: repo="deb http://repo.percona.com/apt {{ansible_distribution_release}} main"
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    apt_repository: repo="deb http://repo.percona.com/apt {{ ansible_distribution_release }} main"
+    when: ansible_os_family == "Debian" and mysql_present is failed
     become: yes
     tags:
       - mysql
 
   - name: Percona MySQL | Add Debian apt repository
-    apt_repository: repo="deb-src http://repo.percona.com/apt {{ansible_distribution_release}} main"
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    apt_repository: repo="deb-src http://repo.percona.com/apt {{ ansible_distribution_release }} main"
+    when: ansible_os_family == "Debian" and mysql_present is failed
     become: yes
     tags:
       - mysql
 
   - name: Percona MySQL | Apt-Pinning the packages
     template: src="{{role_dir}}/templates/00percona.pref.j2" dest="/etc/apt/preferences.d/00percona.pref"
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    when: ansible_os_family == "Debian" and mysql_present is failed
     become: yes
     tags:
       - mysql
@@ -90,14 +90,14 @@
 
   - name: Percona MySQL | Install percona-server-server
     apt: update-cache=yes force=yes state=present pkg="percona-server-server"
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    when: ansible_os_family == "Debian" and mysql_present is failed
     become: yes
     tags:
       - mysql
 
   - name: Percona MySQL | Dirty ensure password is set, if it is still empty (happens with percona)
-    shell: mysqladmin -u {{mysql_root_user}} password {{mysql_root_password}}
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    shell: mysqladmin -u {{ mysql_root_user }} password {{ mysql_root_password }}
+    when: ansible_os_family == "Debian" and mysql_present is failed and docker_test is not defined
     ignore_errors: true
     become: yes
     tags:
@@ -105,7 +105,7 @@
 
   - name: Percona MySQL | install libmysqlclient-dev
     apt: name=libmysqlclient-dev update_cache=yes state=latest
-    when: ansible_os_family == "Debian" and mysql_present|failed
+    when: ansible_os_family == "Debian" and mysql_present is failed
     become: yes
     tags:
       - mysql
