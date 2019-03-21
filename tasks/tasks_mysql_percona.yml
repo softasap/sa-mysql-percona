@@ -97,7 +97,7 @@
 
   - name: Percona MySQL | Dirty ensure password is set, if it is still empty (happens with percona)
     shell: mysqladmin -u {{ mysql_root_user }} password {{ mysql_root_password }}
-    when: ansible_os_family == "Debian" and mysql_present is failed
+    when: ansible_os_family == "Debian" and mysql_present is failed and docker_test is not defined
     ignore_errors: true
     become: yes
     tags:
