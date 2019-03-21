@@ -1,9 +1,11 @@
 ---
-  - include: tasks_mysql_percona.yml
+  - include_tasks: tasks_mysql_percona.yml
 
-  - include: tasks_mysql_harden.yml
+  - include_tasks: tasks_mysql_harden.yml
     when: option_harden_mysql
 
-  - include: tasks_mysql_cfg_patch.yml
+  - include_tasks: tasks_mysql_cfg_patch.yml
 
-  - include: tasks_dbs_configure.yml
+  - include_tasks: tasks_dbs_configure.yml
+
+  - include_tasks: tasks_console_helper.yml
