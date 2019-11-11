@@ -19,6 +19,7 @@
     become: yes
     tags:
       - mysql
+      - skip_ansible_lint
 
   - name: Percona MySQL | Preset root password (generic)
     shell: echo percona-server-server/{{ item }} password {{ mysql_root_password }} | debconf-set-selections
@@ -29,6 +30,7 @@
     become: yes
     tags:
       - mysql
+      - skip_ansible_lint
 
   - name: Percona MySQL | Preset root password (5.6)
     shell: echo percona-server-server-5.6 mysql-server/{{ item }} password {{ mysql_root_password }} | debconf-set-selections
@@ -39,6 +41,7 @@
     become: yes
     tags:
       - mysql
+      - skip_ansible_lint
 
   - name: Percona MySQL | Preset root password (5.7)
     shell: echo percona-server-server-5.7 mysql-server/{{ item }} password {{ mysql_root_password }} | debconf-set-selections
@@ -49,7 +52,7 @@
     become: yes
     tags:
       - mysql
-
+      - skip_ansible_lint
 
   - name: Percona MySQL | Obtaining percona public key
     apt_key: keyserver=keyserver.ubuntu.com id=8507EFA5
@@ -81,7 +84,7 @@
       - mysql
 
   - name: Percona MySQL | Apt-Pinning the packages
-    template: src="{{role_dir}}/templates/00percona.pref.j2" dest="/etc/apt/preferences.d/00percona.pref"
+    template: src="{{ role_dir }}/templates/00percona.pref.j2" dest="/etc/apt/preferences.d/00percona.pref"
     when: ansible_os_family == "Debian" and mysql_present is failed
     become: yes
     tags:
@@ -102,9 +105,10 @@
     become: yes
     tags:
       - mysql
+      - skip_ansible_lint
 
   - name: Percona MySQL | install libmysqlclient-dev
-    apt: name=libmysqlclient-dev update_cache=yes state=latest
+    apt: name=libmysqlclient-dev update_cache=yes state=present
     when: ansible_os_family == "Debian" and mysql_present is failed
     become: yes
     tags:
